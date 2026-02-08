@@ -1,0 +1,68 @@
+╔════════════════════════════════════════════════════════════╗
+║                                                            ║
+║     🔧 FIX: Server Error During Login                      ║
+║                                                            ║
+╚════════════════════════════════════════════════════════════╝
+
+PROBLEM: Database tables not created yet
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ SOLUTION: Setup Database (2 Minutes)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+STEP 1: Go to Railway Dashboard
+   → https://railway.app
+   → Select your project
+   → Click MySQL service
+
+STEP 2: Open Query Tab
+   → Click "Query" tab
+   → You'll see SQL editor
+
+STEP 3: Copy Database Setup SQL
+   → Open: FullStack_Version\railway_setup.sql
+   → Select ALL (Ctrl+A)
+   → Copy (Ctrl+C)
+
+STEP 4: Execute in Railway
+   → Paste in Query editor
+   → Click "Execute" or "Run"
+   → Wait for success message
+
+STEP 5: Verify Tables
+   → Run this query: SHOW TABLES;
+   → Should see: users, slots, bookings, notifications, themes
+
+STEP 6: Test Login
+   → Refresh your app
+   → Login with: admin@edumeet.com / admin123
+   → Should work! ✅
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔐 Login Credentials After Setup:
+
+   Admin: admin@edumeet.com / admin123
+   Faculty: priya.sharma@college.edu / admin123
+   Student: rahul.kumar@student.edu / admin123
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📋 What railway_setup.sql Does:
+
+   ✓ Creates all database tables
+   ✓ Adds admin user
+   ✓ Adds sample faculty (2 professors)
+   ✓ Adds sample students (3 students)
+   ✓ Adds sample slots
+   ✓ Sets up themes
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⚡ This is a ONE-TIME setup!
+
+   After running the SQL, your app will work permanently.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

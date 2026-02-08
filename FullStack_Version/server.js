@@ -35,6 +35,7 @@ const studentRoutes = require('./routes/student');
 const facultyRoutes = require('./routes/faculty');
 const adminRoutes = require('./routes/admin');
 const apiRoutes = require('./routes/api');
+const setupRoutes = require('./routes/setup');
 
 // Use routes
 app.use('/api/auth', authRoutes);
@@ -42,6 +43,7 @@ app.use('/api/student', studentRoutes);
 app.use('/api/faculty', facultyRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api', apiRoutes);
+app.use('/', setupRoutes); // One-time database setup
 
 // Serve HTML pages
 app.get('/', (req, res) => {
