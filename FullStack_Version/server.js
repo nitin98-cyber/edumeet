@@ -79,23 +79,32 @@ app.use((req, res) => {
     res.status(404).sendFile(path.join(__dirname, 'public', '404.html'));
 });
 
-// Start server
-app.listen(PORT, () => {
-    console.log(`
+// Initialize database and start server
+const initializeDatabase = require('./init-database');
+
+initializeDatabase()
+    .then(() => {
+        app.listen(PORT, () => {
+            console.log(`
     ╔═══════════════════════════════════════╗
     ║   🎓 EduMeet Server Running          ║
     ║   Port: ${PORT}                         ║
     ║   URL: http://localhost:${PORT}         ║
     ║   Environment: ${process.env.NODE_ENV}           ║
     ╚═══════════════════════════════════════╝
-    `);
-    
-    // Run cleanup on server start
-    runCleanup();
-    
-    // Schedule cleanup every hour
-    setInterval(runCleanup, 60 * 60 * 1000); // Every 1 hour
-});
+            `);
+            
+            // Run cleanup on server start
+            runCleanup();
+            
+            // Schedule cleanup every hour
+            setInterval(runCleanup, 60 * 60 * 1000); // Every 1 hour
+        });
+    })
+    .catch((error) => {
+        console.error('Failed to start server:', error);
+        process.exit(1);
+    });
 
 // Cleanup function
 async function runCleanup() {
