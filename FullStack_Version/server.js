@@ -82,29 +82,32 @@ app.use((req, res) => {
 // Initialize database and start server
 const initializeDatabase = require('./init-database');
 
-initializeDatabase()
-    .then(() => {
-        app.listen(PORT, () => {
-            console.log(`
+// Start server first, then initialize database in background
+app.listen(PORT, () => {
+    console.log(`
     ╔═══════════════════════════════════════╗
     ║   🎓 EduMeet Server Running          ║
     ║   Port: ${PORT}                         ║
     ║   URL: http://localhost:${PORT}         ║
     ║   Environment: ${process.env.NODE_ENV}           ║
     ╚═══════════════════════════════════════╝
-            `);
-            
+    `);
+    
+    // Initialize database in background (don't block server start)
+    initializeDatabase()
+        .then(() => {
+            console.log('✓ Database initialized');
             // Run cleanup on server start
             runCleanup();
-            
-            // Schedule cleanup every hour
-            setInterval(runCleanup, 60 * 60 * 1000); // Every 1 hour
+        })
+        .catch((error) => {
+            console.error('⚠ Database initialization failed:', error.message);
+            console.log('Server running but database may need manual setup');
         });
-    })
-    .catch((error) => {
-        console.error('Failed to start server:', error);
-        process.exit(1);
-    });
+    
+    // Schedule cleanup every hour
+    setInterval(runCleanup, 60 * 60 * 1000); // Every 1 hour
+});
 
 // Cleanup function
 async function runCleanup() {
