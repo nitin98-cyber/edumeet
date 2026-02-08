@@ -1,7 +1,5 @@
 // Automatic Database Initialization for Railway
 const mysql = require('mysql2/promise');
-const fs = require('fs');
-const path = require('path');
 
 async function initializeDatabase() {
     let connection;
@@ -26,18 +24,52 @@ async function initializeDatabase() {
         if (tables.length === 0) {
             console.log('📦 Database is empty. Importing schema...');
             
-            // Read and execute SQL file
-            const sqlPath = path.join(__dirname, '..', 'Database', 'edumeet_database.sql');
-            const sql = fs.readFileSync(sqlPath, 'utf8');
-            
-            // Split by semicolon and execute each statement
-            const statements = sql.split(';').filter(stmt => stmt.trim());
-            
-            for (const statement of statements) {
-                if (statement.trim()) {
-                    await connection.query(statement);
-                }
-            }
+            // Create tables directly (inline SQL)
+            await connection.query(`
+                CREATE TABLE IF NOT EXISTS users (
+                    user_id INT AUTO_INCREMENT PRIMARY KEY,
+                    name VARCHAR(100) NOT NULL,
+                    email VARCHAR(100) UNIQUE NOT NULL,
+                    password VARCHAR(255) NOT NULL,
+                    role ENUM('student', 'faculty', 'admin') NOT NULL,
+                    department VARCHAR(100),
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                );
+            `);
+
+            await connection.query(`
+                CREATE TABLE IF NOT EXISTS time_slots (
+                    slot_id INT AUTO_INCREMENT PRIMARY KEY,
+                    faculty_id INT NOT NULL,
+                    date DATE NOT NULL,
+                    start_time TIME NOT NULL,
+                    end_time TIME NOT NULL,
+                    is_available BOOLEAN DEFAULT TRUE,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (faculty_id) REFERENCES users(user_id) ON DELETE CASCADE
+                );
+            `);
+
+            await connection.query(`
+                CREATE TABLE IF NOT EXISTS appointments (
+                    appointment_id INT AUTO_INCREMENT PRIMARY KEY,
+                    student_id INT NOT NULL,
+                    slot_id INT NOT NULL,
+                    purpose TEXT,
+                    status ENUM('pending', 'approved', 'rejected', 'completed') DEFAULT 'pending',
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (student_id) REFERENCES users(user_id) ON DELETE CASCADE,
+                    FOREIGN KEY (slot_id) REFERENCES time_slots(slot_id) ON DELETE CASCADE
+                );
+            `);
+
+            // Insert sample users
+            await connection.query(`
+                INSERT IGNORE INTO users (name, email, password, role, department) VALUES
+                ('Admin User', 'admin@edumeet.com', '$2b$10$rZ5vK8jxqX9YxqZ5vK8jxO7Z5vK8jxqX9YxqZ5vK8jxqX9YxqZ5vK', 'admin', 'Administration'),
+                ('Dr. John Faculty', 'faculty@edumeet.com', '$2b$10$rZ5vK8jxqX9YxqZ5vK8jxO7Z5vK8jxqX9YxqZ5vK8jxqX9YxqZ5vK', 'faculty', 'Computer Science'),
+                ('Student User', 'student@edumeet.com', '$2b$10$rZ5vK8jxqX9YxqZ5vK8jxO7Z5vK8jxqX9YxqZ5vK8jxqX9YxqZ5vK', 'student', 'Computer Science');
+            `);
             
             console.log('✓ Database schema imported successfully!');
             console.log('✓ Sample users created:');
