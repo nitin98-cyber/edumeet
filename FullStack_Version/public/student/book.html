@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Appointment - EduMeet</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="animated-bg">
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+    </div>
+    
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="/" class="navbar-brand">
+                <i class="fas fa-graduation-cap"></i>
+                <span>EduMeet</span>
+            </a>
+            <ul class="navbar-menu">
+                <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+                <li><a href="book.html" class="nav-link active">Book Appointment</a></li>
+                <li><span class="user-welcome">Welcome, <span id="userName">Student</span></span></li>
+                <li><button class="theme-toggle" onclick="toggleTheme()">
+                    <i class="fas fa-moon"></i>
+                </button></li>
+                <li><button class="btn btn-danger btn-sm" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div id="alertContainer"></div>
+
+        <h1 class="page-title animate-fade-in">
+            <i class="fas fa-calendar-plus"></i>
+            <span class="gradient-text">Book Appointment</span>
+        </h1>
+
+        <!-- Faculty Selection -->
+        <div id="facultySection">
+            <div class="card glass-card animate-fade-in-up">
+                <h3 class="card-title">
+                    <i class="fas fa-users"></i> Select Faculty
+                </h3>
+                <div class="search-bar">
+                    <input type="text" id="facultySearch" class="search-input" placeholder="Search faculty by name or department...">
+                </div>
+            </div>
+
+            <div id="facultyGrid" class="faculty-grid">
+                <div class="spinner-container">
+                    <div class="spinner"></div>
+                    <p>Loading faculty...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slots Selection (Hidden initially) -->
+        <div id="slotsSection" style="display: none;">
+            <button class="btn btn-secondary mb-3" onclick="backToFaculty()">
+                <i class="fas fa-arrow-left"></i> Back to Faculty List
+            </button>
+
+            <div class="card glass-card animate-fade-in-up">
+                <div class="faculty-info" id="selectedFacultyInfo"></div>
+            </div>
+
+            <div class="card glass-card animate-fade-in-up">
+                <h3 class="card-title">
+                    <i class="fas fa-clock"></i> Available Time Slots
+                </h3>
+                <div id="slotsGrid" class="slots-grid">
+                    <div class="spinner-container">
+                        <div class="spinner"></div>
+                        <p>Loading slots...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Booking Confirmation Modal -->
+        <div id="bookingModal" class="modal">
+            <div class="modal-content glass-card">
+                <div class="modal-header">
+                    <h3><i class="fas fa-calendar-check"></i> Confirm Booking</h3>
+                    <button class="modal-close" onclick="closeBookingModal()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div id="bookingDetails"></div>
+                    <div class="form-group">
+                        <label class="form-label">Reason for Appointment *</label>
+                        <textarea id="appointmentReason" class="form-control" rows="4" placeholder="Please describe the reason for your appointment..." required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" onclick="closeBookingModal()">Cancel</button>
+                    <button class="btn btn-primary" onclick="confirmBooking()">
+                        <i class="fas fa-check"></i> Confirm Booking
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/main.js"></script>
+    <script src="/js/student.js"></script>
+    <script>
+        // Initialize booking page
+        document.addEventListener('DOMContentLoaded', () => {
+            loadFacultyList();
+        });
+    </script>
+</body>
+</html>

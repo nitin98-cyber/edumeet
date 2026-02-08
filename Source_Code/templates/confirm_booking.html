@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm Booking - EduMeet</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎓 EduMeet</h1>
+            <a href="{{ url_for('student_dashboard') }}" class="btn btn-small">Dashboard</a>
+        </header>
+
+        <main>
+            <div class="form-container">
+                <h2>Confirm Appointment Booking</h2>
+                
+                <div class="booking-details">
+                    <p><strong>Faculty:</strong> {{ slot.faculty_name }}</p>
+                    <p><strong>Date:</strong> {{ slot.date.strftime('%d %B %Y') }}</p>
+                    <p><strong>Time:</strong> {{ slot.start_time }} - {{ slot.end_time }}</p>
+                </div>
+
+                <form method="POST" action="{{ url_for('book_appointment', slot_id=slot.slot_id) }}">
+                    <div class="form-group">
+                        <label for="reason">Reason for Appointment:</label>
+                        <textarea id="reason" name="reason" rows="4" required 
+                                  placeholder="Please describe the purpose of your appointment..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Confirm Booking</button>
+                    <a href="{{ url_for('view_faculty') }}" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

@@ -1,0 +1,36 @@
+
+<svg width="192" height="192" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="192" height="192" fill="url(#grad)" rx="28.799999999999997"/>
+  
+  <!-- Graduation cap icon -->
+  <g transform="translate(38.400000000000006, 48)">
+    <!-- Cap top -->
+    <path d="M 57.599999999999994 28.799999999999997 L 115.19999999999999 48 L 57.599999999999994 67.19999999999999 L 0 48 Z" 
+          fill="#FFD700" stroke="#FFF" stroke-width="1.92"/>
+    
+    <!-- Cap base -->
+    <rect x="48" y="67.19999999999999" width="19.200000000000003" height="38.400000000000006" 
+          fill="#FFF" rx="3.84"/>
+    
+    <!-- Tassel -->
+    <circle cx="115.19999999999999" cy="48" r="5.76" fill="#FFD700"/>
+    <line x1="115.19999999999999" y1="53.760000000000005" x2="115.19999999999999" y2="67.19999999999999" 
+          stroke="#FFD700" stroke-width="2.88"/>
+  </g>
+  
+  <!-- Text "E" -->
+  <text x="96" y="144" 
+        font-family="Arial, sans-serif" 
+        font-size="48" 
+        font-weight="bold" 
+        fill="#FFF" 
+        text-anchor="middle">E</text>
+</svg>

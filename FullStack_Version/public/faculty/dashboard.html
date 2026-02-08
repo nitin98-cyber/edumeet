@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Dashboard - EduMeet</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/themes.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="animated-bg">
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+    </div>
+    
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="/" class="navbar-brand">
+                <i class="fas fa-graduation-cap"></i>
+                <span>EduMeet</span>
+            </a>
+            <div class="mobile-nav-actions">
+                <button class="notification-btn mobile-notification-btn" onclick="toggleNotifications()">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge" id="notificationCount">0</span>
+                </button>
+                <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            <ul class="navbar-menu" id="navbarMenu">
+                <li class="mobile-only"><a href="dashboard.html" class="nav-link">
+                    <i class="fas fa-home"></i> Dashboard
+                </a></li>
+                <li class="mobile-only"><button class="btn btn-primary btn-sm mobile-add-slot-btn" onclick="openSlotModal()">
+                    <i class="fas fa-plus-circle"></i> Add Time Slot
+                </button></li>
+                <li class="mobile-only"><button class="theme-toggle" onclick="toggleTheme()">
+                    <i class="fas fa-moon"></i> Toggle Theme
+                </button></li>
+                <li class="mobile-only"><button class="btn btn-danger btn-sm" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button></li>
+                <li class="desktop-only"><a href="dashboard.html" class="nav-link active">Dashboard</a></li>
+                <li class="desktop-only"><span class="user-welcome">Welcome, <span id="userName">Faculty</span></span></li>
+                <li class="desktop-only"><button class="notification-btn" onclick="toggleNotifications()">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge" id="notificationCount">0</span>
+                </button></li>
+                <li class="desktop-only"><button class="theme-toggle" onclick="toggleTheme()">
+                    <i class="fas fa-moon"></i>
+                </button></li>
+                <li class="desktop-only"><button class="btn btn-danger btn-sm" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay" onclick="toggleMobileMenu()"></div>
+
+    <div class="notification-dropdown" id="notificationDropdown">
+        <div class="notification-header">
+            <h3>Notifications</h3>
+            <button onclick="markAllAsRead()" class="btn-link">Mark all as read</button>
+        </div>
+        <div class="notification-list" id="notificationList">
+            <div class="spinner"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div id="alertContainer"></div>
+
+        <h1 class="page-title animate-fade-in">
+            <i class="fas fa-chalkboard-teacher"></i>
+            <span class="gradient-text">Faculty Dashboard</span>
+        </h1>
+
+        <!-- Statistics Cards -->
+        <div class="stats-grid">
+            <div class="stat-card glass-card animate-scale-in">
+                <div class="stat-icon primary">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-value" id="totalAppointments">0</div>
+                    <div class="stat-label">Total Appointments</div>
+                </div>
+                <div class="stat-progress">
+                    <div class="stat-progress-bar" data-width="100"></div>
+                </div>
+            </div>
+
+            <div class="stat-card glass-card animate-scale-in" style="animation-delay: 0.1s;">
+                <div class="stat-icon warning">
+                    <i class="fas fa-hourglass-half"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-value" id="pendingRequests">0</div>
+                    <div class="stat-label">Pending Requests</div>
+                </div>
+                <div class="stat-progress">
+                    <div class="stat-progress-bar" data-width="0"></div>
+                </div>
+            </div>
+
+            <div class="stat-card glass-card animate-scale-in" style="animation-delay: 0.2s;">
+                <div class="stat-icon success">
+                    <i class="fas fa-check-double"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-value" id="approvedAppointments">0</div>
+                    <div class="stat-label">Approved</div>
+                </div>
+                <div class="stat-progress">
+                    <div class="stat-progress-bar" data-width="0"></div>
+                </div>
+            </div>
+
+            <div class="stat-card glass-card animate-scale-in" style="animation-delay: 0.3s;">
+                <div class="stat-icon info">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-value" id="availableSlots">0</div>
+                    <div class="stat-label">Available Slots</div>
+                </div>
+                <div class="stat-progress">
+                    <div class="stat-progress-bar" data-width="0"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chart -->
+        <div class="card glass-card animate-fade-in-up">
+            <h3 class="card-title">
+                <i class="fas fa-chart-doughnut"></i> Appointment Status Overview
+            </h3>
+            <div class="chart-container">
+                <canvas id="statusChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Manage Slots Button -->
+        <div class="text-center my-4 animate-fade-in-up">
+            <button class="btn btn-primary btn-large" onclick="openSlotModal()">
+                <i class="fas fa-plus-circle"></i> Add Time Slot
+            </button>
+        </div>
+
+        <!-- Time Slots Section -->
+        <div class="card glass-card animate-fade-in-up">
+            <h3 class="card-title">
+                <i class="fas fa-clock"></i> My Time Slots
+            </h3>
+            <div id="slotsContainer">
+                <div class="spinner-container">
+                    <div class="spinner"></div>
+                    <p>Loading slots...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Appointment Requests -->
+        <div class="card glass-card animate-fade-in-up">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-inbox"></i> Appointment Requests
+                </h3>
+                <button class="btn btn-success btn-sm" onclick="exportBookingHistory()">
+                    <i class="fas fa-file-pdf"></i> Export PDF
+                </button>
+            </div>
+            <div id="requestsContainer">
+                <div class="spinner-container">
+                    <div class="spinner"></div>
+                    <p>Loading requests...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Slot Modal -->
+    <div id="slotModal" class="modal">
+        <div class="modal-content glass-card">
+            <div class="modal-header">
+                <h3><i class="fas fa-clock"></i> Add Time Slot</h3>
+                <button class="modal-close" onclick="closeSlotModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="slotForm">
+                    <div class="form-group">
+                        <label class="form-label">Date *</label>
+                        <input type="date" id="slotDate" class="form-control" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Start Time *</label>
+                            <input type="time" id="startTime" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">End Time *</label>
+                            <input type="time" id="endTime" class="form-control" required>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeSlotModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="addTimeSlot()">
+                    <i class="fas fa-save"></i> Add Slot
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/main.js"></script>
+    <script src="/js/faculty.js"></script>
+</body>
+</html>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PWA Test - EduMeet</title>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/themes.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .test-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .test-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .test-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            margin: 10px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+        .status-ok { color: #10b981; }
+        .status-error { color: #ef4444; }
+        .status-warning { color: #f59e0b; }
+        .install-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            display: none;
+        }
+        .install-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-bg">
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+    </div>
+    
+    <div class="test-container">
+        <div class="test-card">
+            <h1 style="color: white; margin-bottom: 20px;">
+                <i class="fas fa-mobile-alt"></i> PWA Status Check
+            </h1>
+            
+            <div id="testResults"></div>
+            
+            <button id="installBtn" class="install-btn" onclick="installPWA()">
+                <i class="fas fa-download"></i> Install EduMeet
+            </button>
+        </div>
+        
+        <div class="test-card">
+            <h2 style="color: white; margin-bottom: 15px;">
+                <i class="fas fa-info-circle"></i> How to Install
+            </h2>
+            <div style="color: rgba(255, 255, 255, 0.8); line-height: 1.8;">
+                <h3 style="color: white;">Desktop (Chrome/Edge):</h3>
+                <ol>
+                    <li>Look for install icon in address bar (⊕)</li>
+                    <li>Or click the button above</li>
+                    <li>Or use Chrome menu → Install EduMeet</li>
+                </ol>
+                
+                <h3 style="color: white; margin-top: 20px;">Android:</h3>
+                <ol>
+                    <li>Tap menu (⋮)</li>
+                    <li>Select "Install app" or "Add to Home screen"</li>
+                    <li>Confirm installation</li>
+                </ol>
+                
+                <h3 style="color: white; margin-top: 20px;">iOS (Safari):</h3>
+                <ol>
+                    <li>Tap Share button (□↑)</li>
+                    <li>Scroll and tap "Add to Home Screen"</li>
+                    <li>Tap "Add"</li>
+                </ol>
+            </div>
+        </div>
+        
+        <div class="test-card">
+            <h2 style="color: white; margin-bottom: 15px;">
+                <i class="fas fa-tools"></i> Troubleshooting
+            </h2>
+            <div style="color: rgba(255, 255, 255, 0.8); line-height: 1.8;">
+                <p><strong>Install button not showing?</strong></p>
+                <ul>
+                    <li>Make sure you're using Chrome, Edge, or supported browser</li>
+                    <li>Check if already installed (won't show again)</li>
+                    <li>Try refreshing the page</li>
+                    <li>Check browser console (F12) for errors</li>
+                </ul>
+                
+                <p style="margin-top: 15px;"><strong>On localhost:</strong></p>
+                <ul>
+                    <li>PWA features work on localhost for testing</li>
+                    <li>HTTPS not required for localhost</li>
+                    <li>Service worker should register successfully</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <script src="/js/pwa.js"></script>
+    <script>
+        // Check PWA features
+        function checkPWAFeatures() {
+            const results = document.getElementById('testResults');
+            let html = '';
+            
+            // Check Service Worker
+            const swSupported = 'serviceWorker' in navigator;
+            html += createTestItem(
+                'Service Worker Support',
+                swSupported ? 'Supported' : 'Not Supported',
+                swSupported ? 'ok' : 'error'
+            );
+            
+            // Check Manifest
+            const manifestLink = document.querySelector('link[rel="manifest"]');
+            html += createTestItem(
+                'Manifest Link',
+                manifestLink ? 'Found' : 'Missing',
+                manifestLink ? 'ok' : 'error'
+            );
+            
+            // Check if running standalone
+            const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+            html += createTestItem(
+                'Running Mode',
+                isStandalone ? 'Standalone (Installed)' : 'Browser',
+                isStandalone ? 'ok' : 'warning'
+            );
+            
+            // Check online status
+            html += createTestItem(
+                'Connection',
+                navigator.onLine ? 'Online' : 'Offline',
+                navigator.onLine ? 'ok' : 'warning'
+            );
+            
+            // Check HTTPS (not required for localhost)
+            const isSecure = location.protocol === 'https:' || location.hostname === 'localhost';
+            html += createTestItem(
+                'Secure Context',
+                isSecure ? 'Yes' : 'No (HTTPS required for production)',
+                isSecure ? 'ok' : 'warning'
+            );
+            
+            // Check beforeinstallprompt
+            html += createTestItem(
+                'Install Prompt',
+                'Waiting for event...',
+                'warning'
+            );
+            
+            results.innerHTML = html;
+            
+            // Check service worker registration
+            if (swSupported) {
+                navigator.serviceWorker.getRegistration().then(registration => {
+                    if (registration) {
+                        updateTestItem('Service Worker', 'Registered ✓', 'ok');
+                    } else {
+                        updateTestItem('Service Worker', 'Not Registered', 'warning');
+                    }
+                });
+            }
+        }
+        
+        function createTestItem(label, value, status) {
+            return `
+                <div class="test-item" id="test-${label.replace(/\s+/g, '-')}">
+                    <span style="color: white; font-weight: 500;">${label}:</span>
+                    <span class="status-${status}">${value}</span>
+                </div>
+            `;
+        }
+        
+        function updateTestItem(label, value, status) {
+            const item = document.getElementById(`test-${label.replace(/\s+/g, '-')}`);
+            if (item) {
+                item.innerHTML = `
+                    <span style="color: white; font-weight: 500;">${label}:</span>
+                    <span class="status-${status}">${value}</span>
+                `;
+            }
+        }
+        
+        // Install PWA
+        let deferredPrompt;
+        
+        window.addEventListener('beforeinstallprompt', (e) => {
+            console.log('beforeinstallprompt event fired');
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // Show install button
+            document.getElementById('installBtn').style.display = 'block';
+            
+            // Update status
+            updateTestItem('Install Prompt', 'Available! Click button below', 'ok');
+        });
+        
+        async function installPWA() {
+            if (!deferredPrompt) {
+                alert('Install prompt not available. Try using browser menu → Install EduMeet');
+                return;
+            }
+            
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            console.log(`User response: ${outcome}`);
+            
+            if (outcome === 'accepted') {
+                updateTestItem('Install Prompt', 'Installed! ✓', 'ok');
+            }
+            
+            deferredPrompt = null;
+            document.getElementById('installBtn').style.display = 'none';
+        }
+        
+        window.addEventListener('appinstalled', () => {
+            console.log('PWA installed successfully');
+            updateTestItem('Install Prompt', 'Installed! ✓', 'ok');
+            alert('EduMeet installed successfully! 🎉');
+        });
+        
+        // Run checks on load
+        window.addEventListener('load', () => {
+            checkPWAFeatures();
+            
+            // Check if already installed
+            if (window.matchMedia('(display-mode: standalone)').matches) {
+                updateTestItem('Install Prompt', 'Already Installed ✓', 'ok');
+            }
+        });
+        
+        // Update connection status
+        window.addEventListener('online', () => {
+            updateTestItem('Connection', 'Online', 'ok');
+        });
+        
+        window.addEventListener('offline', () => {
+            updateTestItem('Connection', 'Offline', 'warning');
+        });
+    </script>
+</body>
+</html>

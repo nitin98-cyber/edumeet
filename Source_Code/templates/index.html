@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduMeet - Faculty Appointment System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎓 EduMeet</h1>
+            <p class="tagline">Faculty Availability & Appointment Management System</p>
+        </header>
+
+        <main class="home-content">
+            <div class="welcome-box">
+                <h2>Welcome to EduMeet</h2>
+                <p>Streamline your faculty-student interactions with our easy-to-use appointment booking system.</p>
+                
+                <div class="features">
+                    <div class="feature">
+                        <span class="icon">📅</span>
+                        <h3>Easy Scheduling</h3>
+                        <p>Book appointments with faculty in just a few clicks</p>
+                    </div>
+                    <div class="feature">
+                        <span class="icon">⏰</span>
+                        <h3>Real-time Availability</h3>
+                        <p>View faculty availability and book instantly</p>
+                    </div>
+                    <div class="feature">
+                        <span class="icon">✅</span>
+                        <h3>Track Status</h3>
+                        <p>Monitor your appointment requests and approvals</p>
+                    </div>
+                </div>
+
+                <div class="cta-buttons">
+                    <a href="{{ url_for('login') }}" class="btn btn-primary">Login</a>
+                </div>
+                
+                <p style="margin-top: 20px; color: #666; font-size: 0.9em;">
+                    <strong>Note:</strong> Student accounts are created by administrators. Please contact your admin for login credentials.
+                </p>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2026 EduMeet. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>

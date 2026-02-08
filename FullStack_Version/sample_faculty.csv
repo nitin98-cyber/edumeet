@@ -1,0 +1,11 @@
+name,email,department,designation,course,phone,password
+Dr. Rajesh Kumar,dr.rajesh@example.com,Computer Science,Professor,Data Structures,9876540001,faculty123
+Dr. Meera Sharma,dr.meera@example.com,Computer Science,Associate Professor,Algorithms,9876540002,faculty123
+Prof. Suresh Patel,prof.suresh@example.com,Information Technology,Assistant Professor,Database Management,9876540003,faculty123
+Dr. Lakshmi Reddy,dr.lakshmi@example.com,Information Technology,Professor,Web Development,9876540004,faculty123
+Prof. Anil Singh,prof.anil@example.com,Electronics,Associate Professor,Digital Electronics,9876540005,faculty123
+Dr. Kavita Gupta,dr.kavita@example.com,Electronics,Professor,Microprocessors,9876540006,faculty123
+Prof. Ramesh Verma,prof.ramesh@example.com,Mechanical,Assistant Professor,Thermodynamics,9876540007,faculty123
+Dr. Sunita Nair,dr.sunita@example.com,Mechanical,Professor,Fluid Mechanics,9876540008,faculty123
+Prof. Vijay Desai,prof.vijay@example.com,Civil,Associate Professor,Structural Engineering,9876540009,faculty123
+Dr. Pooja Iyer,dr.pooja@example.com,Civil,Professor,Construction Management,9876540010,faculty123

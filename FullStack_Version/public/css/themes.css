@@ -1,0 +1,319 @@
+/* ========================================
+   EduMeet - Premium Theme System
+   10 Beautiful Themes
+   ======================================== */
+
+/* Default Theme (Ocean Breeze) */
+:root {
+    --primary: #667eea;
+    --primary-dark: #5568d3;
+    --secondary: #764ba2;
+    --accent: #f093fb;
+    --success: #4ade80;
+    --warning: #fbbf24;
+    --danger: #f87171;
+    --info: #60a5fa;
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --bg-card: rgba(30, 41, 59, 0.8);
+    --text-primary: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --border-color: rgba(255, 255, 255, 0.1);
+    --shadow: rgba(0, 0, 0, 0.3);
+}
+
+/* 🌊 Ocean Breeze (Professional Blue) */
+[data-theme="ocean"] {
+    --primary: #667eea;
+    --primary-dark: #5568d3;
+    --secondary: #764ba2;
+    --accent: #4facfe;
+    --success: #4ade80;
+    --warning: #fbbf24;
+    --danger: #f87171;
+    --info: #60a5fa;
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --bg-card: rgba(30, 41, 59, 0.8);
+    --text-primary: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --border-color: rgba(255, 255, 255, 0.1);
+    --shadow: rgba(0, 0, 0, 0.3);
+}
+
+/* 🌸 Sakura (Soft Pink) */
+[data-theme="sakura"] {
+    --primary: #ec4899;
+    --primary-dark: #db2777;
+    --secondary: #f472b6;
+    --accent: #fbbf24;
+    --success: #4ade80;
+    --warning: #fb923c;
+    --danger: #f87171;
+    --info: #a78bfa;
+    --bg-primary: #1a0a14;
+    --bg-secondary: #2d1b24;
+    --bg-card: rgba(45, 27, 36, 0.8);
+    --text-primary: #fce7f3;
+    --text-secondary: #f9a8d4;
+    --border-color: rgba(236, 72, 153, 0.2);
+    --shadow: rgba(236, 72, 153, 0.3);
+}
+
+/* 🌲 Forest Green (Nature) */
+[data-theme="forest"] {
+    --primary: #10b981;
+    --primary-dark: #059669;
+    --secondary: #34d399;
+    --accent: #fbbf24;
+    --success: #4ade80;
+    --warning: #fb923c;
+    --danger: #f87171;
+    --info: #60a5fa;
+    --bg-primary: #0a1f0f;
+    --bg-secondary: #14291a;
+    --bg-card: rgba(20, 41, 26, 0.8);
+    --text-primary: #d1fae5;
+    --text-secondary: #a7f3d0;
+    --border-color: rgba(16, 185, 129, 0.2);
+    --shadow: rgba(16, 185, 129, 0.3);
+}
+
+/* 🔥 Sunset Orange (Energetic) */
+[data-theme="sunset"] {
+    --primary: #f97316;
+    --primary-dark: #ea580c;
+    --secondary: #fb923c;
+    --accent: #fbbf24;
+    --success: #4ade80;
+    --warning: #fde047;
+    --danger: #dc2626;
+    --info: #60a5fa;
+    --bg-primary: #1f0a0a;
+    --bg-secondary: #2d1410;
+    --bg-card: rgba(45, 20, 16, 0.8);
+    --text-primary: #fed7aa;
+    --text-secondary: #fdba74;
+    --border-color: rgba(249, 115, 22, 0.2);
+    --shadow: rgba(249, 115, 22, 0.3);
+}
+
+/* 🌙 Midnight (Dark Premium) */
+[data-theme="midnight"] {
+    --primary: #8b5cf6;
+    --primary-dark: #7c3aed;
+    --secondary: #a78bfa;
+    --accent: #c084fc;
+    --success: #4ade80;
+    --warning: #fbbf24;
+    --danger: #f87171;
+    --info: #60a5fa;
+    --bg-primary: #0a0a0f;
+    --bg-secondary: #14141f;
+    --bg-card: rgba(20, 20, 31, 0.9);
+    --text-primary: #e9d5ff;
+    --text-secondary: #c4b5fd;
+    --border-color: rgba(139, 92, 246, 0.2);
+    --shadow: rgba(139, 92, 246, 0.4);
+}
+
+/* ☀️ Sunshine Yellow (Cheerful) */
+[data-theme="sunshine"] {
+    --primary: #eab308;
+    --primary-dark: #ca8a04;
+    --secondary: #fbbf24;
+    --accent: #fb923c;
+    --success: #4ade80;
+    --warning: #f59e0b;
+    --danger: #f87171;
+    --info: #60a5fa;
+    --bg-primary: #1f1a0a;
+    --bg-secondary: #2d2410;
+    --bg-card: rgba(45, 36, 16, 0.8);
+    --text-primary: #fef3c7;
+    --text-secondary: #fde68a;
+    --border-color: rgba(234, 179, 8, 0.2);
+    --shadow: rgba(234, 179, 8, 0.3);
+}
+
+/* 💜 Royal Purple (Elegant) */
+[data-theme="royal"] {
+    --primary: #9333ea;
+    --primary-dark: #7e22ce;
+    --secondary: #a855f7;
+    --accent: #c084fc;
+    --success: #4ade80;
+    --warning: #fbbf24;
+    --danger: #f87171;
+    --info: #60a5fa;
+    --bg-primary: #1a0a2e;
+    --bg-secondary: #2d1b4e;
+    --bg-card: rgba(45, 27, 78, 0.8);
+    --text-primary: #f3e8ff;
+    --text-secondary: #e9d5ff;
+    --border-color: rgba(147, 51, 234, 0.2);
+    --shadow: rgba(147, 51, 234, 0.4);
+}
+
+/* 🌈 Rainbow (Vibrant) */
+[data-theme="rainbow"] {
+    --primary: #ec4899;
+    --primary-dark: #db2777;
+    --secondary: #8b5cf6;
+    --accent: #06b6d4;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --info: #3b82f6;
+    --bg-primary: #1a0a1f;
+    --bg-secondary: #2d1b3d;
+    --bg-card: rgba(45, 27, 61, 0.8);
+    --text-primary: #fce7f3;
+    --text-secondary: #f9a8d4;
+    --border-color: rgba(236, 72, 153, 0.2);
+    --shadow: rgba(236, 72, 153, 0.3);
+}
+
+/* 🏔️ Arctic (Minimal White) */
+[data-theme="arctic"] {
+    --primary: #0ea5e9;
+    --primary-dark: #0284c7;
+    --secondary: #06b6d4;
+    --accent: #22d3ee;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --info: #3b82f6;
+    --bg-primary: #f8fafc;
+    --bg-secondary: #f1f5f9;
+    --bg-card: rgba(255, 255, 255, 0.9);
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --border-color: rgba(15, 23, 42, 0.1);
+    --shadow: rgba(15, 23, 42, 0.1);
+}
+
+/* 🎓 Academic (Traditional) */
+[data-theme="academic"] {
+    --primary: #1e40af;
+    --primary-dark: #1e3a8a;
+    --secondary: #3b82f6;
+    --accent: #60a5fa;
+    --success: #059669;
+    --warning: #d97706;
+    --danger: #dc2626;
+    --info: #0284c7;
+    --bg-primary: #0a1628;
+    --bg-secondary: #1e293b;
+    --bg-card: rgba(30, 41, 59, 0.8);
+    --text-primary: #dbeafe;
+    --text-secondary: #bfdbfe;
+    --border-color: rgba(30, 64, 175, 0.2);
+    --shadow: rgba(30, 64, 175, 0.3);
+}
+
+/* Theme-specific adjustments for Arctic (light theme) */
+[data-theme="arctic"] .glass-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(15, 23, 42, 0.1);
+    box-shadow: 0 4px 6px rgba(15, 23, 42, 0.05);
+}
+
+[data-theme="arctic"] .navbar {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.1);
+}
+
+[data-theme="arctic"] .btn-primary {
+    color: white;
+}
+
+[data-theme="arctic"] .stat-card {
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+}
+
+[data-theme="arctic"] .animated-bg {
+    background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 100%);
+}
+
+[data-theme="arctic"] .bubble {
+    background: rgba(14, 165, 233, 0.1);
+}
+
+/* Smooth theme transitions */
+* {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Theme preview cards */
+.theme-preview {
+    width: 100%;
+    height: 120px;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.theme-preview:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.theme-preview.active {
+    border: 3px solid var(--primary);
+    box-shadow: 0 0 20px var(--primary);
+}
+
+/* Ocean Breeze Preview */
+.theme-preview.ocean {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* Sakura Preview */
+.theme-preview.sakura {
+    background: linear-gradient(135deg, #ec4899 0%, #f472b6 100%);
+}
+
+/* Forest Preview */
+.theme-preview.forest {
+    background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+}
+
+/* Sunset Preview */
+.theme-preview.sunset {
+    background: linear-gradient(135deg, #f97316 0%, #fb923c 100%);
+}
+
+/* Midnight Preview */
+.theme-preview.midnight {
+    background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
+}
+
+/* Sunshine Preview */
+.theme-preview.sunshine {
+    background: linear-gradient(135deg, #eab308 0%, #fbbf24 100%);
+}
+
+/* Royal Preview */
+.theme-preview.royal {
+    background: linear-gradient(135deg, #9333ea 0%, #a855f7 100%);
+}
+
+/* Rainbow Preview */
+.theme-preview.rainbow {
+    background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 50%, #06b6d4 100%);
+}
+
+/* Arctic Preview */
+.theme-preview.arctic {
+    background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 100%);
+    border: 2px solid #0ea5e9;
+}
+
+/* Academic Preview */
+.theme-preview.academic {
+    background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+}

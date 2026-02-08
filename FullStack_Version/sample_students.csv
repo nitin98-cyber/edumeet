@@ -1,0 +1,11 @@
+name,email,roll_number,department,section,course,phone,password
+Rahul Kumar,rahul.kumar@example.com,CS2024001,Computer Science,A,B.Tech,9876543210,student123
+Priya Sharma,priya.sharma@example.com,CS2024002,Computer Science,A,B.Tech,9876543211,student123
+Amit Patel,amit.patel@example.com,CS2024003,Computer Science,B,B.Tech,9876543212,student123
+Sneha Reddy,sneha.reddy@example.com,IT2024001,Information Technology,A,B.Tech,9876543213,student123
+Vikram Singh,vikram.singh@example.com,IT2024002,Information Technology,A,B.Tech,9876543214,student123
+Anjali Gupta,anjali.gupta@example.com,EC2024001,Electronics,A,B.Tech,9876543215,student123
+Rohan Verma,rohan.verma@example.com,EC2024002,Electronics,B,B.Tech,9876543216,student123
+Kavya Nair,kavya.nair@example.com,ME2024001,Mechanical,A,B.Tech,9876543217,student123
+Arjun Desai,arjun.desai@example.com,ME2024002,Mechanical,A,B.Tech,9876543218,student123
+Divya Iyer,divya.iyer@example.com,CE2024001,Civil,A,B.Tech,9876543219,student123

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Slots - EduMeet</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=2">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎓 EduMeet</h1>
+            <div class="user-info">
+                <a href="{{ url_for('view_faculty') }}" class="back-link">← Back to Faculty List</a>
+                <a href="{{ url_for('student_dashboard') }}" class="btn btn-small">Dashboard</a>
+            </div>
+        </header>
+
+        <main>
+            <div class="dashboard">
+                <h2>Available Slots - {{ faculty['name'] }}</h2>
+                <p><strong>Department:</strong> {{ faculty['department'] }}</p>
+                
+                {% if slots %}
+                    <div class="slots-grid">
+                        {% for slot in slots %}
+                        <div class="slot-card">
+                            <div class="slot-date">📅 {{ slot['date'].strftime('%d %B %Y') }}</div>
+                            <div class="slot-time">⏰ {{ slot['start_time'] }} - {{ slot['end_time'] }}</div>
+                            {% if slot.get('booking_count', 0) > 0 %}
+                                <div class="slot-bookings">👥 {{ slot.get('booking_count', 0) }} student(s) booked</div>
+                            {% endif %}
+                            <a href="{{ url_for('book_appointment', slot_id=slot['slot_id']) }}" 
+                               class="btn btn-success btn-small">
+                                Book This Slot
+                            </a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="no-data">No available slots at the moment. Please check back later.</p>
+                {% endif %}
+            </div>
+        </main>
+    </div>
+</body>
+</html>

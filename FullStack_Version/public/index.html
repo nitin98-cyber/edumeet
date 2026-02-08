@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Modern faculty appointment booking system for educational institutions">
+    <title>EduMeet - Faculty Appointment System</title>
+    
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="EduMeet">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/themes.css">
+    <script src="/js/pwa.js" defer></script>
+</head>
+<body>
+    <div class="animated-bg"></div>
+    
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="/" class="navbar-brand">
+                🎓 EduMeet
+            </a>
+            <ul class="navbar-menu">
+                <li><a href="/login">Login</a></li>
+                <li><button class="theme-toggle" onclick="toggleTheme()">🌙</button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="container">
+        <div class="card glass-card text-center" style="margin-top: 4rem; padding: 4rem 2rem;">
+            <h1 style="font-size: 3.5rem; margin-bottom: 1rem; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800;">
+                Welcome to EduMeet
+            </h1>
+            <p style="font-size: 1.4rem; color: var(--text-secondary); margin-bottom: 2.5rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+                Streamline Faculty-Student Appointments with Modern Technology
+            </p>
+            
+            <a href="/login" class="btn btn-primary" style="font-size: 1.2rem; padding: 1rem 3rem;">
+                Get Started →
+            </a>
+        </div>
+
+        <!-- Features Section -->
+        <div class="stats-grid" style="margin-top: 4rem;">
+            <div class="card glass-card text-center">
+                <div class="stat-icon primary" style="margin: 0 auto;">📚</div>
+                <h3 style="margin: 1rem 0; color: var(--text-primary);">Easy Booking</h3>
+                <p style="color: var(--text-secondary); line-height: 1.6;">
+                    Book appointments with faculty members in just a few clicks. Simple, fast, and efficient.
+                </p>
+            </div>
+            
+            <div class="card glass-card text-center">
+                <div class="stat-icon success" style="margin: 0 auto;">⏰</div>
+                <h3 style="margin: 1rem 0; color: var(--text-primary);">Real-time Updates</h3>
+                <p style="color: var(--text-secondary); line-height: 1.6;">
+                    Get instant notifications about appointment status changes and updates.
+                </p>
+            </div>
+            
+            <div class="card glass-card text-center">
+                <div class="stat-icon warning" style="margin: 0 auto;">📊</div>
+                <h3 style="margin: 1rem 0; color: var(--text-primary);">Smart Dashboard</h3>
+                <p style="color: var(--text-secondary); line-height: 1.6;">
+                    Track all your appointments in one beautiful, animated interface.
+                </p>
+            </div>
+            
+            <div class="card glass-card text-center">
+                <div class="stat-icon danger" style="margin: 0 auto;">🔒</div>
+                <h3 style="margin: 1rem 0; color: var(--text-primary);">Secure & Private</h3>
+                <p style="color: var(--text-secondary); line-height: 1.6;">
+                    Your data is protected with industry-standard security measures.
+                </p>
+            </div>
+        </div>
+
+        <!-- Technology Stack -->
+        <div class="card glass-card text-center" style="margin-top: 4rem; padding: 3rem;">
+            <h2 style="margin-bottom: 2rem; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                Built with Modern Technology
+            </h2>
+            <div style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap;">
+                <div style="padding: 1rem 2rem; background: var(--card-bg); border-radius: 10px; box-shadow: var(--shadow);">
+                    <strong>Node.js</strong>
+                </div>
+                <div style="padding: 1rem 2rem; background: var(--card-bg); border-radius: 10px; box-shadow: var(--shadow);">
+                    <strong>Express</strong>
+                </div>
+                <div style="padding: 1rem 2rem; background: var(--card-bg); border-radius: 10px; box-shadow: var(--shadow);">
+                    <strong>MySQL</strong>
+                </div>
+                <div style="padding: 1rem 2rem; background: var(--card-bg); border-radius: 10px; box-shadow: var(--shadow);">
+                    <strong>JavaScript</strong>
+                </div>
+                <div style="padding: 1rem 2rem; background: var(--card-bg); border-radius: 10px; box-shadow: var(--shadow);">
+                    <strong>CSS3</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center" style="margin: 4rem 0 2rem; color: var(--text-secondary);">
+            <p>© 2026 EduMeet - Faculty Appointment System</p>
+            <p style="margin-top: 0.5rem;">Built with ❤️ using Full Stack JavaScript</p>
+        </div>
+    </div>
+
+    <script src="/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Slot Details - EduMeet</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; margin: 0; padding: 0; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        header { background: linear-gradient(135deg, #667eea, #764ba2); padding: 20px 40px; color: white; display: flex; justify-content: space-between; align-items: center; }
+        .back-link, .btn-logout { background: rgba(255,255,255,0.2); color: white; padding: 10px 20px; border-radius: 25px; text-decoration: none; margin-left: 10px; }
+        .faculty-header { background: white; border-radius: 15px; padding: 25px; margin: 20px 0; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .faculty-name { font-size: 2em; color: #667eea; margin-bottom: 10px; }
+        .faculty-info { color: #666; margin: 5px 0; }
+        h3 { color: #667eea; margin: 30px 0 15px 0; }
+        .slots-table, .appointments-table { width: 100%; background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-bottom: 30px; }
+        table { width: 100%; border-collapse: collapse; }
+        th { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 15px; text-align: left; }
+        td { padding: 15px; border-bottom: 1px solid #f0f0f0; }
+        tr:hover { background: #f8f9fa; }
+        .badge { padding: 5px 15px; border-radius: 15px; font-size: 0.85em; font-weight: 600; }
+        .badge-success { background: rgba(74,222,128,0.2); color: #22c55e; }
+        .badge-warning { background: rgba(251,191,36,0.2); color: #f59e0b; }
+        .badge-danger { background: rgba(248,113,113,0.2); color: #dc2626; }
+        .badge-secondary { background: rgba(148,163,184,0.2); color: #64748b; }
+        .no-data { text-align: center; padding: 40px; color: #666; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🎓 EduMeet - Faculty Details</h1>
+        <div>
+            <a href="{{ url_for('admin_faculty_slots') }}" class="back-link">← Back to List</a>
+            <a href="{{ url_for('logout') }}" class="btn-logout">Logout</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="faculty-header">
+            <div class="faculty-name">👨‍🏫 {{ faculty.name }}</div>
+            <div class="faculty-info">🏢 Department: {{ faculty.department }}</div>
+            <div class="faculty-info">📋 Designation: {{ faculty.designation }}</div>
+        </div>
+
+        <h3>🕐 Active Time Slots</h3>
+        {% if slots %}
+            <div class="slots-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Bookings</th>
+                            <th>Students</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for slot in slots %}
+                        <tr>
+                            <td>📅 {{ slot.date.strftime('%d-%m-%Y') }}</td>
+                            <td>🕐 {{ slot.start_time }} - {{ slot.end_time }}</td>
+                            <td><span class="badge badge-warning">{{ slot.booking_count }} booking(s)</span></td>
+                            <td>{{ slot.student_names or 'No bookings yet' }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="no-data">No active slots found.</div>
+        {% endif %}
+
+        <h3>📋 All Appointments</h3>
+        {% if appointments %}
+            <div class="appointments-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Roll Number</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Reason</th>
+                            <th>Status</th>
+                            <th>Booked At</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for apt in appointments %}
+                        <tr>
+                            <td>👨‍🎓 {{ apt.student_name }}</td>
+                            <td>{{ apt.roll_number }}</td>
+                            <td>📅 {{ apt.date.strftime('%d-%m-%Y') }}</td>
+                            <td>🕐 {{ apt.start_time }} - {{ apt.end_time }}</td>
+                            <td>{{ apt.reason }}</td>
+                            <td>
+                                {% if apt.status == 'Approved' %}
+                                    <span class="badge badge-success">✓ Approved</span>
+                                {% elif apt.status == 'Pending' %}
+                                    <span class="badge badge-warning">⏳ Pending</span>
+                                {% elif apt.status == 'Rejected' %}
+                                    <span class="badge badge-danger">✗ Rejected</span>
+                                {% else %}
+                                    <span class="badge badge-secondary">🚫 Cancelled</span>
+                                {% endif %}
+                            </td>
+                            <td>🕒 {{ apt.created_at.strftime('%d-%m-%Y %H:%M') }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="no-data">No appointments found.</div>
+        {% endif %}
+    </div>
+</body>
+</html>

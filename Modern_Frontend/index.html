@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduMeet - Faculty Appointment System</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+    </div>
+    
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-brand">
+                <i class="fas fa-graduation-cap"></i>
+                <span>EduMeet</span>
+            </a>
+            <ul class="navbar-menu">
+                <li><a href="index.html" class="nav-link active">Home</a></li>
+                <li><a href="login.html" class="nav-link">Login</a></li>
+                <li><button class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
+                    <i class="fas fa-moon"></i>
+                </button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title animate-fade-in">
+                    Welcome to <span class="gradient-text">EduMeet</span>
+                </h1>
+                <p class="hero-subtitle animate-fade-in-delay">
+                    Streamline Faculty-Student Appointments with Modern Technology
+                </p>
+                <div class="hero-buttons animate-fade-in-delay-2">
+                    <a href="login.html" class="btn btn-primary btn-large">
+                        <i class="fas fa-sign-in-alt"></i> Get Started
+                    </a>
+                    <a href="#features" class="btn btn-outline btn-large">
+                        <i class="fas fa-info-circle"></i> Learn More
+                    </a>
+                </div>
+            </div>
+            
+            <div class="hero-image animate-float">
+                <div class="hero-card glass-card">
+                    <i class="fas fa-calendar-check hero-icon"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features-section">
+        <div class="container">
+            <h2 class="section-title">
+                <span class="gradient-text">Amazing Features</span>
+            </h2>
+            <p class="section-subtitle">Everything you need for seamless appointment management</p>
+            
+            <div class="features-grid">
+                <div class="feature-card glass-card animate-on-scroll">
+                    <div class="feature-icon primary">
+                        <i class="fas fa-calendar-plus"></i>
+                    </div>
+                    <h3>Easy Booking</h3>
+                    <p>Book appointments with faculty members in just a few clicks. Simple and intuitive interface.</p>
+                </div>
+                
+                <div class="feature-card glass-card animate-on-scroll">
+                    <div class="feature-icon success">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <h3>Real-time Notifications</h3>
+                    <p>Get instant updates about appointment status, approvals, and reminders.</p>
+                </div>
+                
+                <div class="feature-card glass-card animate-on-scroll">
+                    <div class="feature-icon warning">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Smart Dashboard</h3>
+                    <p>Beautiful analytics and insights with interactive charts and statistics.</p>
+                </div>
+                
+                <div class="feature-card glass-card animate-on-scroll">
+                    <div class="feature-icon danger">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Secure & Private</h3>
+                    <p>Your data is protected with industry-standard security measures.</p>
+                </div>
+                
+                <div class="feature-card glass-card animate-on-scroll">
+                    <div class="feature-icon info">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>Responsive Design</h3>
+                    <p>Works perfectly on all devices - desktop, tablet, and mobile.</p>
+                </div>
+                
+                <div class="feature-card glass-card animate-on-scroll">
+                    <div class="feature-icon purple">
+                        <i class="fas fa-moon"></i>
+                    </div>
+                    <h3>Dark Mode</h3>
+                    <p>Eye-friendly dark theme for comfortable viewing anytime.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item animate-on-scroll">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-value" data-target="500">0</div>
+                    <div class="stat-label">Active Students</div>
+                </div>
+                
+                <div class="stat-item animate-on-scroll">
+                    <div class="stat-icon">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <div class="stat-value" data-target="50">0</div>
+                    <div class="stat-label">Faculty Members</div>
+                </div>
+                
+                <div class="stat-item animate-on-scroll">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="stat-value" data-target="1000">0</div>
+                    <div class="stat-label">Appointments Booked</div>
+                </div>
+                
+                <div class="stat-item animate-on-scroll">
+                    <div class="stat-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="stat-value" data-target="98">0</div>
+                    <div class="stat-label">Satisfaction Rate</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works">
+        <div class="container">
+            <h2 class="section-title">
+                <span class="gradient-text">How It Works</span>
+            </h2>
+            <p class="section-subtitle">Get started in three simple steps</p>
+            
+            <div class="steps-grid">
+                <div class="step-card animate-on-scroll">
+                    <div class="step-number">1</div>
+                    <div class="step-icon">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <h3>Create Account</h3>
+                    <p>Sign up with your student or faculty credentials</p>
+                </div>
+                
+                <div class="step-card animate-on-scroll">
+                    <div class="step-number">2</div>
+                    <div class="step-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3>Find Faculty</h3>
+                    <p>Browse available faculty and their time slots</p>
+                </div>
+                
+                <div class="step-card animate-on-scroll">
+                    <div class="step-number">3</div>
+                    <div class="step-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h3>Book & Confirm</h3>
+                    <p>Select a slot and get instant confirmation</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-card glass-card">
+                <h2>Ready to Get Started?</h2>
+                <p>Join hundreds of students and faculty using EduMeet today</p>
+                <a href="login.html" class="btn btn-primary btn-large">
+                    <i class="fas fa-rocket"></i> Start Now
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fas fa-graduation-cap"></i> EduMeet</h3>
+                    <p>Modern appointment management system for educational institutions.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="login.html">Login</a></li>
+                        <li><a href="#features">Features</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><i class="fas fa-envelope"></i> info@edumeet.com</li>
+                        <li><i class="fas fa-phone"></i> +1 234 567 8900</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 EduMeet. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/animations.js"></script>
+</body>
+</html>
