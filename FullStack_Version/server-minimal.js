@@ -1,6 +1,7 @@
 // Minimal EduMeet Server - Guaranteed to start
 const express = require('express');
 const path = require('path');
+require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -33,12 +34,19 @@ app.post('/api/setup/initialize', async (req, res) => {
         const mysql = require('mysql2/promise');
         const bcrypt = require('bcryptjs');
         
+        // Log environment variables for debugging
+        console.log('DB Config:', {
+            host: process.env.MYSQLHOST,
+            database: process.env.MYSQLDATABASE,
+            port: process.env.MYSQLPORT
+        });
+        
         const pool = mysql.createPool({
-            host: process.env.MYSQLHOST || 'localhost',
-            user: process.env.MYSQLUSER || 'root',
-            password: process.env.MYSQLPASSWORD || '',
-            database: process.env.MYSQLDATABASE || 'railway',
-            port: process.env.MYSQLPORT || 3306
+            host: process.env.MYSQLHOST || process.env.DB_HOST || 'mysql.railway.internal',
+            user: process.env.MYSQLUSER || process.env.DB_USER || 'root',
+            password: process.env.MYSQLPASSWORD || process.env.DB_PASSWORD || '',
+            database: process.env.MYSQLDATABASE || process.env.DB_NAME || 'railway',
+            port: parseInt(process.env.MYSQLPORT || process.env.DB_PORT || '3306')
         });
 
         // Create tables
