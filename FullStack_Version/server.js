@@ -96,16 +96,19 @@ app.listen(PORT, () => {
     `);
     
     // Initialize database in background (don't block server start)
-    initializeDatabase()
-        .then(() => {
-            console.log('✓ Database initialized');
-            // Run cleanup on server start
-            runCleanup();
-        })
-        .catch((error) => {
-            console.error('⚠ Database initialization failed:', error.message);
-            console.log('Server running but database may need manual setup');
-        });
+    // Wrapped in try-catch to prevent crashes
+    setTimeout(() => {
+        initializeDatabase()
+            .then(() => {
+                console.log('✓ Database initialized');
+                // Run cleanup on server start
+                runCleanup();
+            })
+            .catch((error) => {
+                console.error('⚠ Database initialization failed:', error.message);
+                console.log('Server running but database may need manual setup');
+            });
+    }, 2000); // Wait 2 seconds before initializing
     
     // Schedule cleanup every hour
     setInterval(runCleanup, 60 * 60 * 1000); // Every 1 hour

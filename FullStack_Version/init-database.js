@@ -169,10 +169,15 @@ async function initializeDatabase() {
         
     } catch (error) {
         console.error('❌ Database initialization error:', error.message);
-        throw error;
+        // Don't throw - just log and continue
+        console.log('⚠️  Server will continue without database initialization');
     } finally {
         if (connection) {
-            await connection.end();
+            try {
+                await connection.end();
+            } catch (err) {
+                // Ignore connection close errors
+            }
         }
     }
 }
