@@ -6,8 +6,25 @@ const bcrypt = require('bcryptjs');
 
 // Initialize database endpoint - POST request
 router.post('/initialize', async (req, res) => {
+    // Add CORS headers
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'POST');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    
     try {
         console.log('🔧 Manual database initialization requested');
+        
+        // Test database connection first
+        try {
+            await pool.query('SELECT 1');
+            console.log('✓ Database connection OK');
+        } catch (dbError) {
+            console.error('❌ Database connection failed:', dbError.message);
+            return res.status(500).json({
+                success: false,
+                message: 'Cannot connect to database: ' + dbError.message
+            });
+        }
         
         // Create tables
         await pool.query(`
@@ -127,9 +144,17 @@ router.post('/initialize', async (req, res) => {
         console.error('Setup error:', error);
         res.status(500).json({
             success: false,
-            message: error.message
+            message: error.message || 'Unknown error occurred'
         });
     }
+});
+
+// Handle OPTIONS request for CORS
+router.options('/initialize', (req, res) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'POST');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    res.sendStatus(200);
 });
 
 module.exports = router;
