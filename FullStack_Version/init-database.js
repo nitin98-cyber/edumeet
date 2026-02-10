@@ -1,5 +1,6 @@
 // Automatic Database Initialization for Railway
 const mysql = require('mysql2/promise');
+const bcrypt = require('bcryptjs');
 
 async function initializeDatabase() {
     let connection;
@@ -89,7 +90,7 @@ async function initializeDatabase() {
             `);
 
             // Insert sample users with proper bcrypt hashing
-            const bcrypt = require('bcryptjs');
+            console.log('👤 Creating users...');
             const adminPassword = await bcrypt.hash('admin123', 10);
             const facultyPassword = await bcrypt.hash('faculty123', 10);
             const studentPassword = await bcrypt.hash('student123', 10);
@@ -125,6 +126,45 @@ async function initializeDatabase() {
             console.log('   Student: student@edumeet.com / student123');
         } else {
             console.log(`✓ Database already initialized (${tables.length} tables found)`);
+            
+            // Check if users exist
+            try {
+                const [users] = await connection.query('SELECT COUNT(*) as count FROM users');
+                if (users[0].count === 0) {
+                    console.log('⚠️  Tables exist but no users found. Creating users...');
+                    
+                    const adminPassword = await bcrypt.hash('admin123', 10);
+                    const facultyPassword = await bcrypt.hash('faculty123', 10);
+                    const studentPassword = await bcrypt.hash('student123', 10);
+
+                    await connection.query(`
+                        INSERT INTO users (email, password, user_type) VALUES
+                        ('admin@edumeet.com', ?, 'admin'),
+                        ('faculty@edumeet.com', ?, 'faculty'),
+                        ('student@edumeet.com', ?, 'student')
+                    `, [adminPassword, facultyPassword, studentPassword]);
+
+                    const [adminUser] = await connection.query("SELECT user_id FROM users WHERE email = 'admin@edumeet.com'");
+                    const [facultyUser] = await connection.query("SELECT user_id FROM users WHERE email = 'faculty@edumeet.com'");
+                    const [studentUser] = await connection.query("SELECT user_id FROM users WHERE email = 'student@edumeet.com'");
+
+                    await connection.query(`
+                        INSERT INTO faculty (user_id, name, department, email, phone)
+                        VALUES (?, 'Dr. John Smith', 'Computer Science', 'faculty@edumeet.com', '1234567890')
+                    `, [facultyUser[0].user_id]);
+
+                    await connection.query(`
+                        INSERT INTO students (user_id, name, roll_number, email, phone)
+                        VALUES (?, 'Alice Johnson', 'CS2024001', 'student@edumeet.com', '0987654321')
+                    `, [studentUser[0].user_id]);
+                    
+                    console.log('✓ Users created successfully!');
+                } else {
+                    console.log(`✓ Users already exist (${users[0].count} users)`);
+                }
+            } catch (err) {
+                console.log('⚠️  Could not check users:', err.message);
+            }
         }
         
     } catch (error) {
