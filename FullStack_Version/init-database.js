@@ -24,17 +24,41 @@ async function initializeDatabase() {
         if (tables.length === 0) {
             console.log('📦 Database is empty. Importing schema...');
             
-            // Create tables directly (inline SQL)
+            // Create tables with correct schema
             await connection.query(`
                 CREATE TABLE IF NOT EXISTS users (
                     user_id INT AUTO_INCREMENT PRIMARY KEY,
-                    name VARCHAR(100) NOT NULL,
                     email VARCHAR(100) UNIQUE NOT NULL,
                     password VARCHAR(255) NOT NULL,
-                    role ENUM('student', 'faculty', 'admin') NOT NULL,
-                    department VARCHAR(100),
+                    user_type ENUM('student', 'faculty', 'admin') NOT NULL,
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-                );
+                )
+            `);
+
+            await connection.query(`
+                CREATE TABLE IF NOT EXISTS students (
+                    student_id INT AUTO_INCREMENT PRIMARY KEY,
+                    user_id INT UNIQUE NOT NULL,
+                    name VARCHAR(100) NOT NULL,
+                    roll_number VARCHAR(50) UNIQUE NOT NULL,
+                    email VARCHAR(100) NOT NULL,
+                    phone VARCHAR(20),
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+                )
+            `);
+
+            await connection.query(`
+                CREATE TABLE IF NOT EXISTS faculty (
+                    faculty_id INT AUTO_INCREMENT PRIMARY KEY,
+                    user_id INT UNIQUE NOT NULL,
+                    name VARCHAR(100) NOT NULL,
+                    department VARCHAR(100),
+                    email VARCHAR(100) NOT NULL,
+                    phone VARCHAR(20),
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+                )
             `);
 
             await connection.query(`
@@ -46,8 +70,8 @@ async function initializeDatabase() {
                     end_time TIME NOT NULL,
                     is_available BOOLEAN DEFAULT TRUE,
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                    FOREIGN KEY (faculty_id) REFERENCES users(user_id) ON DELETE CASCADE
-                );
+                    FOREIGN KEY (faculty_id) REFERENCES faculty(faculty_id) ON DELETE CASCADE
+                )
             `);
 
             await connection.query(`
@@ -56,20 +80,43 @@ async function initializeDatabase() {
                     student_id INT NOT NULL,
                     slot_id INT NOT NULL,
                     purpose TEXT,
-                    status ENUM('pending', 'approved', 'rejected', 'completed') DEFAULT 'pending',
+                    status ENUM('pending', 'approved', 'rejected', 'completed', 'cancelled') DEFAULT 'pending',
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                    FOREIGN KEY (student_id) REFERENCES users(user_id) ON DELETE CASCADE,
+                    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                    FOREIGN KEY (student_id) REFERENCES students(student_id) ON DELETE CASCADE,
                     FOREIGN KEY (slot_id) REFERENCES time_slots(slot_id) ON DELETE CASCADE
-                );
+                )
             `);
 
-            // Insert sample users
+            // Insert sample users with proper bcrypt hashing
+            const bcrypt = require('bcryptjs');
+            const adminPassword = await bcrypt.hash('admin123', 10);
+            const facultyPassword = await bcrypt.hash('faculty123', 10);
+            const studentPassword = await bcrypt.hash('student123', 10);
+
             await connection.query(`
-                INSERT IGNORE INTO users (name, email, password, role, department) VALUES
-                ('Admin User', 'admin@edumeet.com', '$2b$10$rZ5vK8jxqX9YxqZ5vK8jxO7Z5vK8jxqX9YxqZ5vK8jxqX9YxqZ5vK', 'admin', 'Administration'),
-                ('Dr. John Faculty', 'faculty@edumeet.com', '$2b$10$rZ5vK8jxqX9YxqZ5vK8jxO7Z5vK8jxqX9YxqZ5vK8jxqX9YxqZ5vK', 'faculty', 'Computer Science'),
-                ('Student User', 'student@edumeet.com', '$2b$10$rZ5vK8jxqX9YxqZ5vK8jxO7Z5vK8jxqX9YxqZ5vK8jxqX9YxqZ5vK', 'student', 'Computer Science');
-            `);
+                INSERT INTO users (email, password, user_type) VALUES
+                ('admin@edumeet.com', ?, 'admin'),
+                ('faculty@edumeet.com', ?, 'faculty'),
+                ('student@edumeet.com', ?, 'student')
+            `, [adminPassword, facultyPassword, studentPassword]);
+
+            // Get user IDs
+            const [adminUser] = await connection.query("SELECT user_id FROM users WHERE email = 'admin@edumeet.com'");
+            const [facultyUser] = await connection.query("SELECT user_id FROM users WHERE email = 'faculty@edumeet.com'");
+            const [studentUser] = await connection.query("SELECT user_id FROM users WHERE email = 'student@edumeet.com'");
+
+            // Insert faculty
+            await connection.query(`
+                INSERT INTO faculty (user_id, name, department, email, phone)
+                VALUES (?, 'Dr. John Smith', 'Computer Science', 'faculty@edumeet.com', '1234567890')
+            `, [facultyUser[0].user_id]);
+
+            // Insert student
+            await connection.query(`
+                INSERT INTO students (user_id, name, roll_number, email, phone)
+                VALUES (?, 'Alice Johnson', 'CS2024001', 'student@edumeet.com', '0987654321')
+            `, [studentUser[0].user_id]);
             
             console.log('✓ Database schema imported successfully!');
             console.log('✓ Sample users created:');
