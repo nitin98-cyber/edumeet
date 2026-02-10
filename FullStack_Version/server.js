@@ -123,7 +123,8 @@ async function runCleanup() {
             console.log(`🧹 Cleaned up ${result.affectedRows} expired slot(s)`);
         }
     } catch (error) {
-        console.error('Cleanup error:', error.message);
+        // Silently fail - don't crash the server
+        console.log('⚠️  Cleanup skipped:', error.message);
     }
 }
 
