@@ -2,93 +2,133 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../config/database');
-const fs = require('fs');
-const path = require('path');
+const bcrypt = require('bcryptjs');
 
-// Setup database endpoint - visit once to create tables
-router.get('/setup-database', async (req, res) => {
+// Initialize database endpoint - POST request
+router.post('/initialize', async (req, res) => {
     try {
-        console.log('Starting database setup...');
+        console.log('🔧 Manual database initialization requested');
         
-        // Read SQL file
-        const sqlFile = path.join(__dirname, '..', 'railway_setup.sql');
-        const sql = fs.readFileSync(sqlFile, 'utf8');
-        
-        // Split by semicolon and execute each statement
-        const statements = sql.split(';').filter(stmt => stmt.trim());
-        
-        for (const statement of statements) {
-            if (statement.trim()) {
-                await pool.query(statement);
-            }
-        }
-        
-        // Verify tables
-        const [tables] = await pool.query('SHOW TABLES');
-        
-        res.send(`
-            <html>
-            <head>
-                <title>Database Setup Complete</title>
-                <style>
-                    body { font-family: Arial; max-width: 800px; margin: 50px auto; padding: 20px; }
-                    .success { background: #d4edda; border: 1px solid #c3e6cb; padding: 20px; border-radius: 5px; }
-                    .info { background: #d1ecf1; border: 1px solid #bee5eb; padding: 15px; margin-top: 20px; border-radius: 5px; }
-                    h1 { color: #155724; }
-                    code { background: #f8f9fa; padding: 2px 6px; border-radius: 3px; }
-                </style>
-            </head>
-            <body>
-                <div class="success">
-                    <h1>✅ Database Setup Complete!</h1>
-                    <p>Created ${tables.length} tables successfully:</p>
-                    <ul>
-                        ${tables.map(t => `<li>${Object.values(t)[0]}</li>`).join('')}
-                    </ul>
-                </div>
-                
-                <div class="info">
-                    <h2>🔐 Login Credentials</h2>
-                    <p><strong>Admin:</strong><br>
-                    Email: <code>admin@edumeet.com</code><br>
-                    Password: <code>admin123</code></p>
-                    
-                    <p><strong>Faculty:</strong><br>
-                    Email: <code>priya.sharma@college.edu</code><br>
-                    Password: <code>admin123</code></p>
-                    
-                    <p><strong>Student:</strong><br>
-                    Email: <code>rahul.kumar@student.edu</code><br>
-                    Password: <code>admin123</code></p>
-                </div>
-                
-                <p style="margin-top: 30px;">
-                    <a href="/" style="background: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
-                        Go to Login Page
-                    </a>
-                </p>
-                
-                <p style="margin-top: 20px; color: #856404; background: #fff3cd; padding: 10px; border-radius: 5px;">
-                    <strong>Security Note:</strong> For production, remove this setup route from server.js after first use.
-                </p>
-            </body>
-            </html>
+        // Create tables
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS users (
+                user_id INT AUTO_INCREMENT PRIMARY KEY,
+                email VARCHAR(100) UNIQUE NOT NULL,
+                password VARCHAR(255) NOT NULL,
+                user_type ENUM('student', 'faculty', 'admin') NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
         `);
+
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS students (
+                student_id INT AUTO_INCREMENT PRIMARY KEY,
+                user_id INT UNIQUE NOT NULL,
+                name VARCHAR(100) NOT NULL,
+                roll_number VARCHAR(50) UNIQUE NOT NULL,
+                email VARCHAR(100) NOT NULL,
+                phone VARCHAR(20),
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+            )
+        `);
+
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS faculty (
+                faculty_id INT AUTO_INCREMENT PRIMARY KEY,
+                user_id INT UNIQUE NOT NULL,
+                name VARCHAR(100) NOT NULL,
+                department VARCHAR(100),
+                email VARCHAR(100) NOT NULL,
+                phone VARCHAR(20),
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+            )
+        `);
+
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS time_slots (
+                slot_id INT AUTO_INCREMENT PRIMARY KEY,
+                faculty_id INT NOT NULL,
+                date DATE NOT NULL,
+                start_time TIME NOT NULL,
+                end_time TIME NOT NULL,
+                is_available BOOLEAN DEFAULT TRUE,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (faculty_id) REFERENCES faculty(faculty_id) ON DELETE CASCADE
+            )
+        `);
+
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS appointments (
+                appointment_id INT AUTO_INCREMENT PRIMARY KEY,
+                student_id INT NOT NULL,
+                slot_id INT NOT NULL,
+                purpose TEXT,
+                status ENUM('pending', 'approved', 'rejected', 'completed', 'cancelled') DEFAULT 'pending',
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                FOREIGN KEY (student_id) REFERENCES students(student_id) ON DELETE CASCADE,
+                FOREIGN KEY (slot_id) REFERENCES time_slots(slot_id) ON DELETE CASCADE
+            )
+        `);
+
+        console.log('✓ Tables created');
+
+        // Check if users already exist
+        const [existingUsers] = await pool.query('SELECT COUNT(*) as count FROM users');
         
+        if (existingUsers[0].count > 0) {
+            return res.json({
+                success: true,
+                message: 'Database already initialized',
+                usersCount: existingUsers[0].count
+            });
+        }
+
+        // Create users
+        const adminPassword = await bcrypt.hash('admin123', 10);
+        const facultyPassword = await bcrypt.hash('faculty123', 10);
+        const studentPassword = await bcrypt.hash('student123', 10);
+
+        await pool.query(`
+            INSERT INTO users (email, password, user_type) VALUES
+            ('admin@edumeet.com', ?, 'admin'),
+            ('faculty@edumeet.com', ?, 'faculty'),
+            ('student@edumeet.com', ?, 'student')
+        `, [adminPassword, facultyPassword, studentPassword]);
+
+        // Get user IDs
+        const [adminUser] = await pool.query("SELECT user_id FROM users WHERE email = 'admin@edumeet.com'");
+        const [facultyUser] = await pool.query("SELECT user_id FROM users WHERE email = 'faculty@edumeet.com'");
+        const [studentUser] = await pool.query("SELECT user_id FROM users WHERE email = 'student@edumeet.com'");
+
+        // Insert faculty
+        await pool.query(`
+            INSERT INTO faculty (user_id, name, department, email, phone)
+            VALUES (?, 'Dr. John Smith', 'Computer Science', 'faculty@edumeet.com', '1234567890')
+        `, [facultyUser[0].user_id]);
+
+        // Insert student
+        await pool.query(`
+            INSERT INTO students (user_id, name, roll_number, email, phone)
+            VALUES (?, 'Alice Johnson', 'CS2024001', 'student@edumeet.com', '0987654321')
+        `, [studentUser[0].user_id]);
+
+        console.log('✓ Users created successfully');
+
+        res.json({
+            success: true,
+            message: 'Database initialized successfully',
+            users: ['admin@edumeet.com', 'faculty@edumeet.com', 'student@edumeet.com']
+        });
+
     } catch (error) {
         console.error('Setup error:', error);
-        res.status(500).send(`
-            <html>
-            <head><title>Setup Error</title></head>
-            <body style="font-family: Arial; max-width: 800px; margin: 50px auto; padding: 20px;">
-                <div style="background: #f8d7da; border: 1px solid #f5c6cb; padding: 20px; border-radius: 5px;">
-                    <h1 style="color: #721c24;">❌ Setup Failed</h1>
-                    <p><strong>Error:</strong> ${error.message}</p>
-                    <p>Check Railway logs for details.</p>
-                </div>
-            </body>
-            </html>
-        `);
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
     }
 });
 

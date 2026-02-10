@@ -43,7 +43,7 @@ app.use('/api/student', studentRoutes);
 app.use('/api/faculty', facultyRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api', apiRoutes);
-app.use('/', setupRoutes); // One-time database setup
+app.use('/api/setup', setupRoutes); // Setup route for database initialization
 
 // Serve HTML pages
 app.get('/', (req, res) => {
