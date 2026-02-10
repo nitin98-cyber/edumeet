@@ -82,9 +82,10 @@ app.use((req, res) => {
 });
 
 // Initialize database and start server
-const initializeDatabase = require('./init-database');
+// Disabled automatic initialization to prevent crashes
+// Use /setup.html page instead
 
-// Start server first, then initialize database in background
+// Start server
 app.listen(PORT, () => {
     console.log(`
     ╔═══════════════════════════════════════╗
@@ -95,20 +96,8 @@ app.listen(PORT, () => {
     ╚═══════════════════════════════════════╝
     `);
     
-    // Initialize database in background (don't block server start)
-    // Wrapped in try-catch to prevent crashes
-    setTimeout(() => {
-        initializeDatabase()
-            .then(() => {
-                console.log('✓ Database initialized');
-                // Run cleanup on server start
-                runCleanup();
-            })
-            .catch((error) => {
-                console.error('⚠ Database initialization failed:', error.message);
-                console.log('Server running but database may need manual setup');
-            });
-    }, 2000); // Wait 2 seconds before initializing
+    console.log('✓ Server started successfully');
+    console.log('📝 Visit /setup.html to initialize database');
     
     // Schedule cleanup every hour
     setInterval(runCleanup, 60 * 60 * 1000); // Every 1 hour
